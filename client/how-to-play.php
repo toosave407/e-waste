@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>วิธีเล่น | E-Waste Rush</title>
+  <title>วิธีเล่นเก | E-Waste Rush</title>
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/game.css" />
 </head>
