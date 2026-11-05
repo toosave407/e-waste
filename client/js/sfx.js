@@ -15,6 +15,7 @@
 
 const SFX = (function () {
   let audioCtx = null;
+  let lastExplosionAt = 0;
   function getCtx() {
     if (!audioCtx) {
       const AC = window.AudioContext || window.webkitAudioContext;
@@ -66,6 +67,11 @@ const SFX = (function () {
    */
   function playExplosion(opts = {}) {
     try {
+      // ไม่สร้าง Web Audio nodes จำนวนมากเมื่อผู้เล่นกดระเบิดติดกันเร็ว ๆ
+      const now = performance.now();
+      if (now - lastExplosionAt < 90) return;
+      lastExplosionAt = now;
+
       const ctx = getCtx();
       const duration = opts.duration ?? 0.6;
       const startAt = ctx.currentTime;

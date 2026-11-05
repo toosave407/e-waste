@@ -87,9 +87,9 @@
     return v || fallback;
   }
   const THEME = {
-    good: cssVar("#ffffff"),
-    bad: cssVar("#ffffff"),
-    ink: cssVar("#ffffff"),
+    good: cssVar("--circuit", "#2f6a4f"),
+    bad: cssVar("--alert", "#c1543f"),
+    ink: cssVar("--ink", "#1e2b23"),
     gold: "#e8b923", // ดาว
     dynamite: "#d16464", // ไดนาไมต์
     nuke: "#7fd68a", // ระเบิดนิวเคลียร์ (เขียวเรืองรังสี)
@@ -98,6 +98,8 @@
   // ---------- เอฟเฟกต์ระเบิด (ไดนาไมต์ / นิวเคลียร์) วาดทับบน canvas ตอนกดโดน ----------
   // แต่ละชิ้นมีอายุจำกัด (EXPLOSION_LIFETIME_MS) แล้วจะถูกลบออกจาก array อัตโนมัติใน loop()
   const EXPLOSION_LIFETIME_MS = 550;
+  // ป้องกันการคลิกระเบิดหลายลูกติดกันจนมีอนุภาคสะสมและทำให้ canvas กระตุก/ค้าง
+  const MAX_ACTIVE_EXPLOSIONS = 8;
   let explosions = [];
 
   function spawnExplosion(x, y, size, kind) {
@@ -114,6 +116,9 @@
         len: randRange(0.5, 1),
       })),
     });
+    if (explosions.length > MAX_ACTIVE_EXPLOSIONS) {
+      explosions.splice(0, explosions.length - MAX_ACTIVE_EXPLOSIONS);
+    }
   }
 
   function drawExplosions(nowTs) {
@@ -175,9 +180,16 @@
 
     nukeFlashTimeoutIds.push(
       window.setTimeout(() => {
-        nukeFlashEl.style.transition = "opacity 0.9s ease-out";
+        nukeFlashEl.style.transition = "opacity 0.65s ease-out";
         nukeFlashEl.style.opacity = "0";
-      }, 2600) // ค้างขาวรวม ~2.6s ก่อนเริ่มจาง แล้วจางอีก ~0.9s = รวมประมาณ 3 วินาที
+        // รับประกันว่า overlay จะไม่ค้างบังเกม แม้ browser จะไม่ทำ transition ให้ครบ
+        nukeFlashTimeoutIds.push(
+          window.setTimeout(() => {
+            nukeFlashEl.style.transition = "none";
+            nukeFlashEl.style.opacity = "0";
+          }, 700)
+        );
+      }, 450)
     );
   }
 
