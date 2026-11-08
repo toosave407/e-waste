@@ -16,10 +16,10 @@
       <div class="trace-divider" aria-hidden="true"></div>
 
       <div class="pcb-card">
-        <p class="result-card__label">คะแนนของคุณ</p>
+        <p class="result-card__label">ผลคะแนนของคุณ</p>
         <p class="result-card__score" id="finalScore">0</p>
         <p class="result-card__player" id="finalPlayer">-</p>
-        <p class="result-card__combo" id="finalMaxCombo">คอมโบสูงสุด: -</p>
+        <p class="result-card__combo" id="finalMaxCombo">คอมโบสูงที่สุด: -</p>
 
         <p class="save-status" id="saveStatus">กำลังบันทึกคะแนน...</p>
 
